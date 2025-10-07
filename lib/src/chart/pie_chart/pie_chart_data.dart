@@ -240,6 +240,7 @@ class PieChartSectionData with EquatableMixin {
     Widget? badgeWidget,
     double? titlePositionPercentageOffset,
     double? badgePositionPercentageOffset,
+    double? capRoundness,
   }) =>
       PieChartSectionData(
         value: value ?? this.value,
@@ -255,6 +256,7 @@ class PieChartSectionData with EquatableMixin {
             titlePositionPercentageOffset ?? this.titlePositionPercentageOffset,
         badgePositionPercentageOffset:
             badgePositionPercentageOffset ?? this.badgePositionPercentageOffset,
+        capRoundness: capRoundness ?? this.capRoundness,
       );
 
   /// Lerps a [PieChartSectionData] based on [t] value, check [Tween.lerp].
@@ -283,6 +285,7 @@ class PieChartSectionData with EquatableMixin {
           b.badgePositionPercentageOffset,
           t,
         ),
+        
       );
 
   /// Used for equality check, see [EquatableMixin].
