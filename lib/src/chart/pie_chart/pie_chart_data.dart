@@ -285,6 +285,7 @@ class PieChartSectionData with EquatableMixin {
           b.badgePositionPercentageOffset,
           t,
         ),
+        capRoundness: lerpDouble(a.capRoundness, b.capRoundness, t)!,
         
       );
 
@@ -302,6 +303,7 @@ class PieChartSectionData with EquatableMixin {
         badgeWidget,
         titlePositionPercentageOffset,
         badgePositionPercentageOffset,
+        
       ];
 }
 
