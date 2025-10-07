@@ -165,17 +165,41 @@ class PieChartPainter extends BaseChartPainter<PieChartData> {
         return;
       }
 
-      final sectionPath = generateSectionPath(
-        section,
-        data.sectionsSpace,
-        tempAngle,
-        sectionDegree,
-        center,
-        centerRadius,
+      // final sectionPath = generateSectionPath(
+      //   section,
+      //   data.sectionsSpace,
+      //   tempAngle,
+      //   sectionDegree,
+      //   center,
+      //   centerRadius,
+      // );
+
+      // drawSection(section, sectionPath, canvasWrapper);
+      // drawSectionStroke(section, sectionPath, canvasWrapper, viewSize);
+      // tempAngle += sectionDegree;
+
+      // Draw rounded arc (custom fork)
+      final radius = centerRadius + section.radius / 2;
+      final rect = Rect.fromCircle(center: center, radius: radius);
+
+      final paint = Paint()
+        ..color = section.color ?? Colors.blue
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = section.radius
+        ..strokeCap = StrokeCap.round
+        ..isAntiAlias = true;
+
+      final startRadian = Utils().radians(tempAngle + data.sectionsSpace / 2);
+      final sweepRadian = Utils().radians(sectionDegree - data.sectionsSpace);
+
+      canvasWrapper.drawArc(
+        rect,
+        startRadian,
+        sweepRadian,
+        false,
+        paint,
       );
 
-      drawSection(section, sectionPath, canvasWrapper);
-      drawSectionStroke(section, sectionPath, canvasWrapper, viewSize);
       tempAngle += sectionDegree;
     }
   }
