@@ -165,7 +165,7 @@ class PieChartSectionData with EquatableMixin {
     this.badgeWidget,
     double? titlePositionPercentageOffset,
     double? badgePositionPercentageOffset,
-    this.capRoundness = 0.4,
+    this.capRoundness = 1.0,
   })  : value = value ?? 10,
         color = color ?? Colors.cyan,
         radius = radius ?? 40,
