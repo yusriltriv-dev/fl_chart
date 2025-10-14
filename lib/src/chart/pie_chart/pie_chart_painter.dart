@@ -119,7 +119,7 @@ class PieChartPainter extends BaseChartPainter<PieChartData> {
       // 🌈 Paint setup
       final paint = Paint()
         ..style = PaintingStyle.stroke
-        ..strokeCap = StrokeCap.round
+        ..strokeCap = StrokeCap.square
         ..strokeWidth = section.radius
         ..isAntiAlias = true;
 
@@ -147,7 +147,7 @@ class PieChartPainter extends BaseChartPainter<PieChartData> {
           ..color = section.borderSide.color
           ..style = PaintingStyle.stroke
           ..strokeWidth = section.borderSide.width
-          ..strokeCap = StrokeCap.round
+          ..strokeCap = StrokeCap.square
           ..isAntiAlias = true;
 
         canvasWrapper.drawArc(
