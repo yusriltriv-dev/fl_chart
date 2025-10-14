@@ -165,7 +165,6 @@ class PieChartSectionData with EquatableMixin {
     this.badgeWidget,
     double? titlePositionPercentageOffset,
     double? badgePositionPercentageOffset,
-    this.capRoundness = 1.0,
   })  : value = value ?? 10,
         color = color ?? Colors.cyan,
         radius = radius ?? 40,
@@ -224,8 +223,6 @@ class PieChartSectionData with EquatableMixin {
   /// 1.0 means near the outside of the [PieChart].
   final double badgePositionPercentageOffset;
 
-  final double capRoundness;
-
   /// Copies current [PieChartSectionData] to a new [PieChartSectionData],
   /// and replaces provided values.
   PieChartSectionData copyWith({
@@ -240,7 +237,6 @@ class PieChartSectionData with EquatableMixin {
     Widget? badgeWidget,
     double? titlePositionPercentageOffset,
     double? badgePositionPercentageOffset,
-    double? capRoundness,
   }) =>
       PieChartSectionData(
         value: value ?? this.value,
@@ -256,7 +252,6 @@ class PieChartSectionData with EquatableMixin {
             titlePositionPercentageOffset ?? this.titlePositionPercentageOffset,
         badgePositionPercentageOffset:
             badgePositionPercentageOffset ?? this.badgePositionPercentageOffset,
-        capRoundness: capRoundness ?? this.capRoundness,
       );
 
   /// Lerps a [PieChartSectionData] based on [t] value, check [Tween.lerp].
@@ -285,8 +280,6 @@ class PieChartSectionData with EquatableMixin {
           b.badgePositionPercentageOffset,
           t,
         ),
-        capRoundness: lerpDouble(a.capRoundness, b.capRoundness, t)!,
-        
       );
 
   /// Used for equality check, see [EquatableMixin].
@@ -303,7 +296,6 @@ class PieChartSectionData with EquatableMixin {
         badgeWidget,
         titlePositionPercentageOffset,
         badgePositionPercentageOffset,
-        
       ];
 }
 
