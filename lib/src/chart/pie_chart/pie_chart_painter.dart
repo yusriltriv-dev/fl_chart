@@ -100,105 +100,64 @@ class PieChartPainter extends BaseChartPainter<PieChartData> {
   ) {
     final data = holder.data;
     final viewSize = canvasWrapper.size;
-
     final center = Offset(viewSize.width / 2, viewSize.height / 2);
 
     var tempAngle = data.startDegreeOffset;
 
     for (var i = 0; i < data.sections.length; i++) {
       final section = data.sections[i];
-      if (section.value == 0) {
-        continue;
-      }
+      if (section.value == 0) continue;
+
       final sectionDegree = sectionsAngle[i];
 
-      if (sectionDegree == 360) {
-        final radius = centerRadius + section.radius / 2;
-        final rect = Rect.fromCircle(center: center, radius: radius);
-        _sectionPaint
-          ..setColorOrGradient(
-            section.color,
-            section.gradient,
-            rect,
-          )
-          ..strokeWidth = section.radius
-          ..style = PaintingStyle.fill;
-
-        final bounds = Rect.fromCircle(
-          center: center,
-          radius: centerRadius + section.radius,
-        );
-        canvasWrapper
-          ..saveLayer(bounds, _sectionSaveLayerPaint)
-          ..drawCircle(
-            center,
-            centerRadius + section.radius,
-            _sectionPaint..blendMode = BlendMode.srcOver,
-          )
-          ..drawCircle(
-            center,
-            centerRadius,
-            _sectionPaint..blendMode = BlendMode.srcOut,
-          )
-          ..restore();
-        _sectionPaint.blendMode = BlendMode.srcOver;
-        if (section.borderSide.width != 0.0 &&
-            section.borderSide.color.a != 0.0) {
-          _sectionStrokePaint
-            ..strokeWidth = section.borderSide.width
-            ..color = section.borderSide.color;
-          // Outer
-          canvasWrapper
-            ..drawCircle(
-              center,
-              centerRadius + section.radius - (section.borderSide.width / 2),
-              _sectionStrokePaint,
-            )
-
-            // Inner
-            ..drawCircle(
-              center,
-              centerRadius + (section.borderSide.width / 2),
-              _sectionStrokePaint,
-            );
-        }
-        return;
+      // 💫 Skip if 0 degree
+      if (sectionDegree <= 0) {
+        tempAngle += sectionDegree;
+        continue;
       }
 
-      // final sectionPath = generateSectionPath(
-      //   section,
-      //   data.sectionsSpace,
-      //   tempAngle,
-      //   sectionDegree,
-      //   center,
-      //   centerRadius,
-      // );
-
-      // drawSection(section, sectionPath, canvasWrapper);
-      // drawSectionStroke(section, sectionPath, canvasWrapper, viewSize);
-      // tempAngle += sectionDegree;
-
-      // Draw rounded arc (custom fork)
-      final radius = centerRadius + section.radius / 2;
-      final rect = Rect.fromCircle(center: center, radius: radius);
-
+      // 🌈 Paint setup
       final paint = Paint()
-        ..color = section.color ?? Colors.blue
         ..style = PaintingStyle.stroke
-        ..strokeWidth = section.radius
         ..strokeCap = StrokeCap.round
+        ..strokeWidth = section.radius
         ..isAntiAlias = true;
 
+      // support gradient or solid color
+      final outerRect = Rect.fromCircle(
+          center: center, radius: centerRadius + section.radius / 2);
+      paint.setColorOrGradient(section.color, section.gradient, outerRect);
+
+      // 🎯 Calculate spacing & angles
       final startRadian = Utils().radians(tempAngle + data.sectionsSpace / 2);
       final sweepRadian = Utils().radians(sectionDegree - data.sectionsSpace);
 
+      // ✏️ Draw rounded arc
       canvasWrapper.drawArc(
-        rect,
+        outerRect,
         startRadian,
         sweepRadian,
         false,
         paint,
       );
+
+      // 🧱 Optional border (outer ring)
+      if (section.borderSide.width > 0 && section.borderSide.color.a != 0.0) {
+        final borderPaint = Paint()
+          ..color = section.borderSide.color
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = section.borderSide.width
+          ..strokeCap = StrokeCap.round
+          ..isAntiAlias = true;
+
+        canvasWrapper.drawArc(
+          outerRect,
+          startRadian,
+          sweepRadian,
+          false,
+          borderPaint,
+        );
+      }
 
       tempAngle += sectionDegree;
     }
